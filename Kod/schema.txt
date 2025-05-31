@@ -1,0 +1,101 @@
+CREATE DATABASE car_sales;
+
+-- Önce dealers tablosunu oluşturmalıyız çünkü admins tablosu buna referans veriyor
+CREATE TABLE dealers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    phone VARCHAR(10) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+-- Kullanıcılar tablosu
+CREATE TABLE customers (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    age INTEGER NOT NULL,
+    phone VARCHAR(10) NOT NULL
+);
+
+-- Bayi yöneticileri (dealer_id NULL olabilir çünkü circular dependency'den kaçınmak için)
+CREATE TABLE admins (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    dealer_id INTEGER REFERENCES dealers(id),
+    name VARCHAR(100) NOT NULL,
+    age INTEGER NOT NULL,
+    phone VARCHAR(10) NOT NULL
+);
+
+-- Dealers tablosuna admin_id eklemek için ALTER TABLE yapacağız
+ALTER TABLE dealers ADD COLUMN admin_id VARCHAR(50) REFERENCES admins(username);
+
+-- Araçlar tablosu
+CREATE TABLE cars (
+    id SERIAL PRIMARY KEY,
+    brand VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    year INTEGER NOT NULL,
+    package_type VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    dealer INTEGER REFERENCES dealers(id),
+    status VARCHAR(20) DEFAULT 'Stokta' CHECK (status IN ('Stokta', 'Satıldı', 'Gösterimde', 'Test Sürüşünde'))
+);
+
+-- Fiyat teklifleri tablosu
+CREATE TABLE price_offers (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER REFERENCES cars(id),
+    customer_id VARCHAR(50) REFERENCES customers(username),
+    dealer_id INTEGER REFERENCES dealers(id),
+    offer_price DECIMAL(10,2) NOT NULL,
+    offer_date TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'Bekliyor' CHECK (status IN ('Bekliyor', 'Reddedildi', 'Onaylandı'))
+);
+
+-- Deneme sürüşü talepleri tablosu
+CREATE TABLE test_drive_requests (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER REFERENCES cars(id),
+    customer_id VARCHAR(50) REFERENCES customers(username),
+    dealer_id INTEGER REFERENCES dealers(id),
+    request_date TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'Bekliyor' CHECK (status IN ('Bekliyor', 'Reddedildi', 'Onaylandı'))
+);
+
+-- Siparişler tablosu
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER REFERENCES cars(id),
+    customer_id VARCHAR(50) REFERENCES customers(username),
+    dealer_id INTEGER REFERENCES dealers(id),
+    order_date TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'Bekliyor' CHECK (status IN ('Bekliyor', 'Reddedildi', 'Onaylandı'))
+);
+
+-- Satış raporları tablosu
+CREATE TABLE sales_reports (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER REFERENCES cars(id),
+    customer_id VARCHAR(50) REFERENCES customers(username),
+    dealer_id INTEGER REFERENCES dealers(id),
+    sale_date TIMESTAMP NOT NULL,
+    sale_price DECIMAL(10,2) NOT NULL
+);
+
+
+-- Test sürüşü tablosu
+CREATE TABLE test_drives (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER REFERENCES cars(id),
+    customer_id VARCHAR(50) REFERENCES customers(username),
+    dealer_id INTEGER REFERENCES dealers(id),
+    start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    end_date TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'Devam Ediyor',
+    notes TEXT
+);
+
+ALTER TABLE customers
+ADD COLUMN registration_date TIMESTAMP WITHOUT TIME ZONE;

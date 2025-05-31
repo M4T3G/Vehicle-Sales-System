@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="arac-satis-sistemi/jarx/Arac Satis.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/arac-satis-sistemi/JarBuild.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=arac-satis-sistemi/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.carsales{Main.java[Main" manifestLocation="/arac-satis-sistemi/manifest" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <folder path="/arac-satis-sistemi/src"/>
+        <folder path="/arac-satis-sistemi/target"/>
+        <file path="/arac-satis-sistemi/.DS_Store"/>
+        <file path="/arac-satis-sistemi/.classpath"/>
+        <file path="/arac-satis-sistemi/.project"/>
+        <file path="/arac-satis-sistemi/[Help"/>
+        <file path="/arac-satis-sistemi/arac-satis-sistemi.iml"/>
+        <file path="/arac-satis-sistemi/mvn"/>
+        <file path="/arac-satis-sistemi/pom.xml"/>
+        <javaElement handleIdentifier="=arac-satis-sistemi/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/"/>
+    </selectedElements>
+</jardesc>

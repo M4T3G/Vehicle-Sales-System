@@ -1,0 +1,68 @@
+-- Bayiler (öncelikle dealers eklenmeli)
+INSERT INTO dealers (name, address, phone, email) VALUES
+('İstanbul Oto', 'Maslak, İstanbul', '2121112233', 'info@istanbuloto.com'),
+('Ankara Otomotiv', 'Çankaya, Ankara', '3122223344', 'satis@ankaraotomotiv.com'),
+('İzmir Araba', 'Karşıyaka, İzmir', '2323334455', 'iletisim@izmiraraba.com');
+
+-- Müşteriler
+INSERT INTO customers (username, password, name, age, phone) VALUES
+('ahmet.yilmaz', 'sifre123', 'Ahmet Yılmaz', 35, '5551112233'),
+('mehmet.kaya', 'sifre456', 'Mehmet Kaya', 28, '5552223344'),
+('ayse.demir', 'sifre789', 'Ayşe Demir', 42, '5553334455'),
+('fatma.celik', 'sifre012', 'Fatma Çelik', 31, '5554445566'),
+('mustafa.arslan', 'sifre345', 'Mustafa Arslan', 45, '5555556677');
+
+-- Yöneticiler (adminler)
+INSERT INTO admins (username, password, dealer_id, name, age, phone) VALUES
+('admin1', 'adminpass1', 1, 'Ali Yıldız', 40, '5556667788'),
+('admin2', 'adminpass2', 2, 'Veli Korkmaz', 38, '5557778899'),
+('admin3', 'adminpass3', 3, 'Zeynep Şahin', 35, '5558889900');
+
+-- Bayi admin ilişkisini güncelleme (düzeltilmiş schema'ya uygun)
+UPDATE dealers SET admin_id = 'admin1' WHERE id = 1;
+UPDATE dealers SET admin_id = 'admin2' WHERE id = 2;
+UPDATE dealers SET admin_id = 'admin3' WHERE id = 3;
+
+-- Araçlar (dealer_id artık SERIAL id'ye referans veriyor)
+INSERT INTO cars (brand, model, year, package_type, price, dealer, status) VALUES
+('Toyota', 'Corolla', 2022, 'Comfort', 450000.00, 1, 'Stokta'),
+('Honda', 'Civic', 2021, 'Executive', 520000.00, 1, 'Gösterimde'),
+('Renault', 'Megane', 2023, 'Business', 380000.00, 2, 'Stokta'),
+('Ford', 'Focus', 2022, 'Titanium', 410000.00, 2, 'Test Sürüşünde'),
+('Volkswagen', 'Golf', 2023, 'Highline', 550000.00, 3, 'Stokta'),
+('BMW', '3 Serisi', 2022, 'Luxury', 850000.00, 3, 'Satıldı');
+
+-- Fiyat teklifleri
+INSERT INTO price_offers (
+    car_id,
+    customer_id,
+    dealer_id,
+    offer_price,
+    offer_date,
+    status
+) VALUES
+    (1, 'ahmet.yilmaz', 1, 430000.00, '2023-05-14 09:30:00', 'Bekliyor'),
+    (3, 'mehmet.kaya',   2, 370000.00, '2023-05-15 14:45:00', 'Onaylandı'),
+    (5, 'ayse.demir',    3, 530000.00, '2023-05-16 11:20:00', 'Reddedildi');
+
+-- Deneme sürüşü talepleri
+INSERT INTO test_drive_requests (car_id, customer_id, dealer_id, request_date, status) VALUES
+(2, 'fatma.celik', 1, '2023-05-15 10:00:00', 'Onaylandı'),
+(4, 'mustafa.arslan', 2, '2023-05-16 14:30:00', 'Bekliyor');
+
+-- Siparişler
+INSERT INTO orders (car_id, customer_id, dealer_id, order_date, status) VALUES
+(6, 'ayse.demir', 3, '2023-05-10 11:20:00', 'Onaylandı'),
+(3, 'mehmet.kaya', 2, '2023-05-12 09:45:00', 'Bekliyor');
+
+-- Satış raporları
+INSERT INTO sales_reports (car_id, customer_id, dealer_id, sale_date, sale_price) VALUES
+(6, 'ayse.demir', 3, '2023-05-11 16:30:00', 850000.00);
+
+
+UPDATE customers SET registration_date = '2015-06-14 08:45:00' WHERE username = 'ahmet.yilmaz';
+UPDATE customers SET registration_date = '2016-11-23 14:20:00' WHERE username = 'mehmet.kaya';
+UPDATE customers SET registration_date = '2017-03-05 09:10:00' WHERE username = 'ayse.demir';
+UPDATE customers SET registration_date = '2018-09-17 18:30:00' WHERE username = 'fatma.celik';
+UPDATE customers SET registration_date = '2020-01-29 11:55:00' WHERE username = 'mustafa.arslan';
+UPDATE customers SET registration_date = '2019-01-29 13:55:00' WHERE username = 'kayserili38';
